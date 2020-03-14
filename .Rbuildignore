@@ -1,0 +1,6 @@
+^LICENSE$
+^README\.md$
+^\.travis\.yml$
+^CONDUCT\.md$
+^CONTRIBUTING.md$
+^vignettes/cache
