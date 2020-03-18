@@ -155,5 +155,5 @@ StatMapTiles <- ggplot2::ggproto(
     )
   },
 
-  required_aes = NULL
+  required_aes = c("x", "y")
 )
