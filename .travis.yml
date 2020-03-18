@@ -1,5 +1,7 @@
 language: r
 
+r_github_packages: statsmaths/ggimg
+
 env:
   global:
     - NOT_CRAN=false
