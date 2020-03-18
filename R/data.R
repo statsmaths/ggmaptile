@@ -17,6 +17,6 @@ NULL
 #'
 #' @name paris_metro
 #' @docType data
-#' @references \url{https://www.data.gouv.fr/fr/datasets/positions-geographiques-des-stations-du-reseau-ratp-ratp/}
+#' @references \url{https://www.data.gouv.fr/fr/datasets/}
 #' @keywords data
 NULL

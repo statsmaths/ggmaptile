@@ -9,6 +9,6 @@ Data frame containing latitude, longitude, name, line, and color for each
 metro stop in the city of Paris.
 }
 \references{
-\url{https://www.data.gouv.fr/fr/datasets/positions-geographiques-des-stations-du-reseau-ratp-ratp/}
+\url{https://www.data.gouv.fr/fr/datasets/}
 }
 \keyword{data}

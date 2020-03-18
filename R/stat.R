@@ -70,8 +70,7 @@
 #' french_city %>%
 #'   ggplot(aes(lng, lat)) +
 #'     stat_maptiles(
-#'       cache_dir = system.file("extdata", package="ggmaptile"),
-#'       zoom = 7
+#'       cache_dir = system.file("extdata", package="ggmaptile")
 #'     ) +
 #'     geom_point(color = "orange") +
 #'     theme_void() +
@@ -79,11 +78,12 @@
 #'
 #' @author Taylor B. Arnold, \email{taylor.arnold@@acm.org}
 #'
+#' @importFrom ggimg GeomRectImage
 #' @export
 stat_maptiles <- function(
   mapping = NULL,
   data = NULL,
-  geom = ggimg::GeomImageBBox,
+  geom = ggimg::GeomRectImage,
   position = "identity",
   show.legend = NA,
   inherit.aes = TRUE,

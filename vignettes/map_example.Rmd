@@ -4,6 +4,7 @@ author: Taylor Arnold
 output:
   rmarkdown::html_vignette:
     css: style.css
+    self_contained: no
   vignette: >
     %\VignetteIndexEntry{Using Map Tiles to Visualize Spatial Data}
     %\VignetteEngine{knitr::rmarkdown}
@@ -12,11 +13,11 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  eval = TRUE,
-  fig.height = 4,
-  fig.width = 5.33,
+  eval = FALSE,
+  fig.height = 5,
+  fig.width = 6.66,
   fig.path='figs/',
-  dpi = 150,
+  dpi = 200,
   fig.align = "center"
 )
 ```
@@ -27,7 +28,7 @@ This vignette introduces the core functions in the **ggmaptile** R package.
 To start, we load the package into R. We all load **dplyr** to assist with
 processing our data.
 
-```{r, message=FALSE, eval=TRUE}
+```{r, message=FALSE, eval = TRUE}
 library(ggplot2)
 library(ggmaptile)
 library(dplyr)
@@ -37,7 +38,7 @@ There are two datasets included with the package. The first gives the location
 of the largest 58 cities in France. We will start by using this dataset to
 illustrate how the package works.
 
-```{r}
+```{r, eval = TRUE}
 french_city
 ```
 
@@ -48,17 +49,20 @@ assigned to the y aesthetic. The function will cover the region spanned by the
 data. Here, we grab tiles to cover the region of the largest 58 cities in
 France.
 
-```{r, eval=TRUE}
+```{r simple-map}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/simple-map-1.png" alt="fig"></img>
+
+
 Often, with a map, it is best to hide the axes and reserve the entire plot
 region for the map itself. The function `mapview` included with the package,
 along with ggplot2's theme `theme_void`, make this relatively easy.
 
-```{r, eval=TRUE}
+```{r mapview}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles() +
@@ -66,11 +70,13 @@ french_city %>%
     mapview()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/mapview-1.png" alt="fig"></img>
+
 Additional layers can be added on top of the map tiles. So, for example, we can
 add points associated with each of the cities and color them according their
 administrative region.
 
-```{r}
+```{r points}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles() +
@@ -78,6 +84,8 @@ french_city %>%
     theme_void() +
     mapview()
 ```
+
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/points-1.png" alt="fig"></img>
 
 And that's it! In the following sections, options and guidance for how to use
 `stat_maptiles` are highlighted to optimise the package for various use cases.
@@ -91,7 +99,7 @@ cover the region in 25 tiles. Providing a positive or negative integer to the
 option `zoom_adj` can adjust this default to zoom in (positive value) or out
 (negative) value. Here is our previous map zoomed out one level.
 
-```{r}
+```{r zoom}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles(
@@ -101,6 +109,8 @@ french_city %>%
     theme_void() +
     mapview()
 ```
+
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/zoom-1.png" alt="fig"></img>
 
 In this case, the zoomed out map actually looks quite nice and provides more
 readable labels for the countries and major landmarks. Be careful when zooming
@@ -116,7 +126,7 @@ from 1 to 19 using the parameter `zoom`.
  caches downloaded tiles within a session and would reuse the "toner-lite"
  tiles that were previously downloaded.
 
- ```{r}
+ ```{r terrain}
  french_city %>%
    ggplot(aes(x = lng, y = lat)) +
      stat_maptiles(
@@ -128,13 +138,15 @@ from 1 to 19 using the parameter `zoom`.
      mapview()
  ```
 
+ <img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/terrain-1.png" alt="fig"></img>
+
 You can also supply a value to the option `alpha` to control the opacity of the
 tiles. This is useful when using bright tiles, such as the terrain ones, to
 make sure your other layers are not lost in the colors of the map itself.
 Note that we do not need to set `force = TRUE` here because the correct tiles
 are already downloaded from the previous code block.
 
-```{r}
+```{r alpha}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles(
@@ -146,13 +158,15 @@ french_city %>%
     mapview()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/alpha-1.png" alt="fig"></img>
+
 By default, downloaded tiles are stored in a local temporary directory. This
 persists within an R session but is lost when closing R. To set an alternative
 local directory, which can be stored between sessions to avoid the constant
 re-downloading of tiles, set the parameter `cache_dir` to the desired root of
 your cache location. Here is its usage with the "watercolor" tiles:
 
-```{r}
+```{r cache}
 french_city %>%
   ggplot(aes(x = lng, y = lat)) +
     stat_maptiles(
@@ -164,6 +178,8 @@ french_city %>%
     theme_void() +
     mapview()
 ```
+
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/cache-1.png" alt="fig"></img>
 
 Combining these options can produce a myriad of interesting plots to help
 visualize and communicate your spatial data. One final option, which requires
@@ -189,7 +205,7 @@ ratios because metro lines tend to extend in one direction (north-south or
 east-west) and offer several different ways that we may want to control the
 dimensions of the output.
 
-```{r}
+```{r, eval = TRUE}
 paris_metro
 ```
 
@@ -198,7 +214,7 @@ line. The dataset includes the metro path and canonical colors associated with
 each line. We will use `geom_segment` the `scale_color_identity` to show these
 features on top of the map.
 
-```{r}
+```{r metro-all}
 paris_metro %>%
   filter(ligne == 4) %>%
   ggplot(aes(lon, lat)) +
@@ -216,6 +232,8 @@ paris_metro %>%
     mapview()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/metro-all-1.png" alt="fig"></img>
+
 The default output looks quite nice. It does a good job of determining the
 required number of tiles. It also makes sure that the plotted map tiles are not
 distorted by only using part of the plot region for the map.
@@ -228,7 +246,7 @@ ratio of the selected tiles. This will add additional tiles either the x or y
 (as needed) dimension to produce a plot of the desired aspect ratio. Here, we
 set the aspect ratio to 1, to have an equal number of x and y tiles.
 
-```{r}
+```{r metro-4}
 paris_metro %>%
   filter(ligne == 4) %>%
   ggplot(aes(lon, lat)) +
@@ -248,13 +266,15 @@ paris_metro %>%
     mapview()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/metro-4-1.png" alt="fig"></img>
+
 Note that, because the tiles are discrete, the aspect ratio of the output may
 only be approximate.
 
 Showing a number of the metro lines on the same map is interesting, but can get
 a bit messy:
 
-```{r}
+```{r metro-4-square}
 paris_metro %>%
   filter(ligne <= 9) %>%
   ggplot(aes(lon, lat)) +
@@ -274,6 +294,8 @@ paris_metro %>%
     mapview()
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/metro-4-square-1.png" alt="fig"></img>
+
 An alternative approach is to use ggplot2's facets to show each line in its
 own small plot. Here, we have two options. First, you could use a
 consistent plot region for all of the maps with fixed scales (the default of
@@ -281,7 +303,7 @@ consistent plot region for all of the maps with fixed scales (the default of
 status message for each facet and zoom each image out by a factor of 1, since
 the default algorithm assumes each map is being printed
 
-```{r}
+```{r metro-facet}
 paris_metro %>%
   filter(ligne <= 9) %>%
   ggplot(aes(lon, lat)) +
@@ -302,11 +324,13 @@ paris_metro %>%
     facet_wrap(~ligne)
 ```
 
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/metro-facet-1.png" alt="fig"></img>
+
 It is also possible to allow the scales to float freely so that each region can
 display a different map. However, in this case you will need to set the aspect
 ratio to a fixed value (otherwise the images will becomes distorted):
 
-```{r}
+```{r metro-facet-free}
 paris_metro %>%
   filter(ligne <= 12) %>%
   ggplot(aes(lon, lat)) +
@@ -327,6 +351,8 @@ paris_metro %>%
     mapview() +
     facet_wrap(~ligne, scale = "free", ncol = 4)
 ```
+
+<img src="https://raw.githubusercontent.com/statsmaths/ggmaptile/master/vignettes/figs/metro-facet-free-1.png" alt="fig"></img>
 
 Using free scales are particularly useful when you want to facet by different
 regions of the plot, such as showing the french cities data with a facet for
