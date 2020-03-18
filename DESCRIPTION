@@ -14,7 +14,9 @@ Imports:
     ggimg
 Suggests:
     knitr (>= 1.15),
-    dplyr
+    dplyr,
+    testthat (>= 1.0.1),
+    covr (>= 2.2.2)
 License: GPL-2
 URL: https://statsmaths.github.io/ggmaptile/
 BugReports: http://github.com/statsmaths/ggmaptile/issues
