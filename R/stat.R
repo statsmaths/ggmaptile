@@ -140,10 +140,10 @@ StatMapTiles <- ggplot2::ggproto(
   ) {
 
     mt_map_extent_data(
-      scales$x$get_limits()[1],
-      scales$x$get_limits()[2],
-      scales$y$get_limits()[1],
-      scales$y$get_limits()[2],
+      min(scales$x$get_limits()),
+      max(scales$x$get_limits()),
+      min(scales$y$get_limits()),
+      max(scales$y$get_limits()),
       zoom = zoom,
       zoom_adj = zoom_adj,
       aspect_ratio = aspect_ratio,
