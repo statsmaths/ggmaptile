@@ -22,4 +22,4 @@ URL: https://statsmaths.github.io/ggmaptile/
 BugReports: http://github.com/statsmaths/ggmaptile/issues
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1

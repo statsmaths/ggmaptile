@@ -144,8 +144,8 @@ mt_map_extent_data <- function(
   df <- data.frame(
     xmin = xtile_to_lon(gr$Var1, zoom = zoom),
     xmax = xtile_to_lon(gr$Var1 + 1, zoom = zoom),
-    ymin = ytile_to_lon(gr$Var2, zoom = zoom),
-    ymax = ytile_to_lon(gr$Var2 + 1, zoom = zoom),
+    ymin = ytile_to_lon(gr$Var2 + 1, zoom = zoom),
+    ymax = ytile_to_lon(gr$Var2, zoom = zoom),
     alpha = alpha,
     img = path_cache,
     stringsAsFactors = FALSE

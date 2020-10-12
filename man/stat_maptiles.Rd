@@ -5,7 +5,9 @@
 \alias{stat_maptiles}
 \alias{StatMapTiles}
 \title{Compute Map Tiles for the Plot Region}
-\format{An object of class \code{StatMapTiles} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 3.}
+\format{
+An object of class \code{StatMapTiles} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 3.
+}
 \usage{
 stat_maptiles(
   mapping = NULL,
