@@ -76,7 +76,7 @@ mt_map_extent_data <- function(
   {
     url <- getOption(
       "mt_url",
-      "http://tile.stamen.com/toner/%d/%d/%d.png"
+      "https://tiles.stadiamaps.com/tiles/stamen_toner_lite/%d/%d/%d@2x.png"
     )
   }
   if (is.null(zoom))
@@ -118,6 +118,7 @@ mt_map_extent_data <- function(
   gr <- expand.grid(seq(xtile_min, xtile_max), seq(ytile_min, ytile_max))
   path_url <- sprintf(url, zoom, gr$Var1, gr$Var2)
   path_cache <- sprintf(cache_path, zoom, gr$Var1, gr$Var2)
+  path_cache <- gsub("@2x", "", path_cache)
 
   num_tiles <- length(path_cache)
   num_tiles_to_grab <- sum(!file.exists(path_cache))
@@ -166,7 +167,10 @@ download_paths <- function(path_url, path_lcl, force = FALSE)
     }
     if (!file.exists(path_lcl[i]) | force)
     {
-      utils::download.file(path_url[i], path_lcl[i], quiet = TRUE)
+      puf <- paste0(path_url[i], "?api_key=", Sys.getenv("GGMAP_API_KEY"))
+      utils::download.file(
+        puf, path_lcl[i], quiet = TRUE
+      )
     }
   }
 }
